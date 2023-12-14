@@ -1,5 +1,6 @@
 <script setup>
-useState("examId", () => "2B401EC2213DA");
+useState("examId", () => "");
+useState("selectedType", () => "");
 </script>
 
 <template>
