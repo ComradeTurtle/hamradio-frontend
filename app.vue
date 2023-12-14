@@ -5,4 +5,5 @@ useState("selectedType", () => "");
 
 <template>
   <NuxtPage />
+  <UNotifications />
 </template>

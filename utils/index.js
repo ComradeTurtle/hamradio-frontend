@@ -2,7 +2,7 @@ export const initializeTest = (type) => {
     return new Promise(async (resolve, reject) => {
         const examId = useState("examId");
 
-        const data = await fetch(`http://localhost:10101/exams/create?type=${type}`, {
+        const data = await fetch(`https://api.hamradio.comradeturtle.dev/exams/create?type=${type}`, {
             method: 'POST'
         }).then((res) => res.json()).catch(reject);
 
@@ -29,8 +29,7 @@ export const readNext = async () => {
         const examId = useState("examId");
         const examQuestion = useState("examQuestion");
 
-        examQuestion.value = await fetch(`http://localhost:10101/exams/readnext?id=${examId.value}`).then((res) => res.json()).catch(reject);
-        console.log(examQuestion.value);
+        examQuestion.value = await fetch(`https://api.hamradio.comradeturtle.dev/exams/readnext?id=${examId.value}`).then((res) => res.json()).catch(reject);
         resolve();
     })
 }
@@ -40,9 +39,11 @@ export const submitQuestion = async (i) => {
         const examId = useState("examId");
         const examQuestion = useState("examQuestion");
 
-        await fetch(`http://localhost:10101/exams/submit?id=${examId.value}&ans=${i}`, {
+        const data = await fetch(`https://api.hamradio.comradeturtle.dev/exams/submit?id=${examId.value}&ans=${i}`, {
             method: 'POST'
-        }).catch(reject);
+        }).then((res) => res.json()).catch(reject);
+
+        if (data.status === 'complete') navigateTo('/result');
 
         resolve();
     })
@@ -50,7 +51,7 @@ export const submitQuestion = async (i) => {
 
 export const getResults = async (id) => {
     return new Promise(async (resolve, reject) => {
-        const data = await fetch(`http://localhost:10101/exams/results?id=${id}`).then((res) => res.json()).catch(reject);
+        const data = await fetch(`https://api.hamradio.comradeturtle.dev/exams/results?id=${id}`).then((res) => res.json()).catch(((res) => resolve({status: res.status})));
 
         useState("examResults", () => data);
         resolve(data);
